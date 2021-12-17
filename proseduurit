@@ -1,0 +1,46 @@
+Tästä tiedostosta löytyy tietokanta hakua varten tehdyt CALL proseduurit phpmyadminissa
+
+TOP 10 suosituimmat elokuvat:
+
+DELIMITER $$
+
+CREATE PROCEDURE GetTop10MovieBeCountry(
+  IN regionCode VARCHAR(4)
+)
+BEGIN
+
+SELECT primary_title, average_rating
+FROM `aliases` JOIN `titles`
+	ON `aliases`.`title_id`=`titles`.`title_id`
+	JOIN `title_ratings`
+		ON `titles`.`title_id`=`title_ratings`.`title_id`
+WHERE (region = regionCode)
+ORDER BY average_rating DESC
+LIMIT 10;
+
+END $$
+
+DELIMITER ;
+
+TOP 10 huonointa elokuvaa:
+
+DELIMITER //
+
+CREATE PROCEDURE GetTop10WorstMoviesByCountry(
+  IN regionCode VARCHAR(4)
+)
+BEGIN
+
+SELECT primary_title, average_rating
+FROM `aliases` JOIN `titles`
+	ON `aliases`.`title_id`=`titles`.`title_id`
+	JOIN `title_ratings`
+		ON `titles`.`title_id`=`title_ratings`.`title_id`
+WHERE (region = regionCode)
+ORDER BY average_rating ASC
+LIMIT 10;
+
+END //
+
+DELIMITER ;
+
